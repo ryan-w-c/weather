@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.73.4/dist/instantsearch.production.min.js" integrity="sha256-KhJczbX11JwgRQX1pcxQOK+/ymw2x3XxJqz1CUIMHBk=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.4.0/themes/satellite-min.css" integrity="sha256-Qn2jMxB0SkFi+WAf540nGb5LBaVTyjVQLqPNaNjduio=" crossorigin="anonymous">
+</head>
 <html lang="en">
   <head>
     <meta charset='utf-8'>
@@ -6,5 +10,38 @@
   </head>
   <body>
     <h1>Hello</h1>
+
+    <div class="ais-InstantSearch">
+      <div id="searchbox"></div>
+      <div id="hits"></div>
+    </div>
+  
+    <script>
+      const searchClient = {
+        search(requests) {
+          return fetch('https://golden-sable-1f1cf8.netlify.app/.netlify/functions/search?query=' + encodeURIComponent(requests[0].params.query))
+            .then(res => res.json())
+            .then(res => ({
+              results: [res.data],
+            }));
+        },
+      };
+
+      const search = instantsearch({
+        indexName: 'worldcities',
+        searchClient,
+      });
+
+      search.addWidgets([
+        instantsearch.widgets.searchBox({
+          container: '#searchbox',
+        }),
+        instantsearch.widgets.hits({
+          container: '#hits',
+        }),
+      ]);
+
+      search.start();
+    </script>
   </body>
 </html>
