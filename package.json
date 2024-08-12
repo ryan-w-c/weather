@@ -1,0 +1,9 @@
+
+{
+  "name": "netlify-functions",
+  "version": "1.0.0",
+  "dependencies": {
+    "algoliasearch": "^4.24.0",
+    "instantsearch.js": "^4.73.4"
+  }
+}
