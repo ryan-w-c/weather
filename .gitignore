@@ -1,0 +1,8 @@
+# Local Netlify folder
+.netlify
+node_modules
+.DS_Store
+package-lock.json
+index.html
+function.js
+style.css
