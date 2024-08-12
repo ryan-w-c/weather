@@ -2,7 +2,7 @@ const algoliasearch = require('algoliasearch');
 const instantsearch = require('instantsearch.js');
 
 export default async (req, context) => {
-  const searchClient = algoliasearch(process.env.ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+  const searchClient = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_API_KEY);
   const search = instantsearch('worldcities', searchClient);
 
   const { query } = JSON.parse(req.body);
