@@ -12,6 +12,11 @@ export default async (req, context) => {
   });
 
   return new Response(JSON.stringify(hits), { 
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'https://cavanagh.dev',
+      'Access-Control-Allow-Methods': 'GET',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
   });
 };
