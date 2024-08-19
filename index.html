@@ -9,7 +9,6 @@
   <style>
     body {
       overflow: hidden;
-      background-color: rgb(82, 194, 232);
       font-family: Open Sans, sans-serif;
       color: white;
       margin: 28px;
@@ -79,7 +78,6 @@
       align-items: end;
       display: flex;
       margin-bottom: 21px;
-
     }
 
     #rightBody {
@@ -110,7 +108,6 @@
       padding-left: 10px;
       padding-right: 10px;
       margin: 0px;
-      margin-bottom: 10px;
     }
 
     #leftHeader h2 {
@@ -151,6 +148,87 @@
       margin-left: 14px;
       margin-right: 14px;
     }
+
+    button {
+      box-shadow: none;
+      background: transparent;
+      transform-style: preserve-3d;
+      padding: 0;
+      height: auto;
+      border: none;
+      float: none;
+    }
+
+    button span {
+      background: rgba(0, 81, 105, 0.45);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      /* font-size: 2rem; */
+      padding: 14px;
+      border: none;
+      /* line-height: 3rem; */
+      will-change: transform, filter;
+      float: none;
+      margin: 0;
+      transition: all 0.15s ease-out;
+      height: auto;
+      border-radius: 100px;
+      overflow: hidden;
+      display: block;
+      margin: 0px auto;
+      display: block;
+      transform: rotateX(0deg) rotateY(0deg) scale(1);
+      filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.3));
+      font-weight: 600;
+      perspective-origin: 0 0;
+      letter-spacing: 0;
+    }
+
+    .button {
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .input {
+      font-size: 30px;
+      width: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out;
+      background: none;
+      border: none;
+      border-bottom: 2px solid white;
+      color: white;
+    }
+
+    .input:focus {
+      outline: none;
+    }
+
+    .input.show {
+      width: 90%;
+      opacity: 1;
+    }
+
+    .input.hide {
+      width: 0;
+      opacity: 0;
+    }
+
+    .hidden {
+      display: none;
+      opacity: 0;
+    }
+
+    #cityName {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    }
+
+    #cityName.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 </head>
@@ -161,7 +239,7 @@
     <div class="header" id="leftPanel">
       <div class="header" id="leftHeader">
         <div style="display: flex; align-items: center;">
-          <h1>73°</h1>
+          <h1 style="margin-bottom: 10px;">73°</h1>
           <img src="img/PartlyCloudy.png" alt="nightPartlyCloudy" style="padding-left:20px; width: 40px; height: 40px;">
         </div>
         <h2>Partly Cloudy</h2>
@@ -196,7 +274,21 @@
     </div>
     <div id="rightPanel">
       <div class="header" id="rightHeader">
-        <h1 style="font-size: 30px; margin-top: 30px;">Seattle, WA </h1>
+        <div style="display: flex; align-items: center; justify-content: flex-end; margin-top: 30px;">
+          <h1 id="cityName"
+            style="font-size: 30px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width: 40vw; max-width: 700px; text-align: right;">
+            Seattle, WA
+          </h1>
+          <button class="button" onclick="buttonPress()" style="margin-left: 10px;">
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="30px" fill="#ffff">
+                <path
+                  d="M782-82 523-341q-29 20-67.5 32T372-297q-118 0-200.5-82.5T89-580q0-118 82.5-200.5T372-863q118 0 200.5 82.5T655-580q0 46-12 83.5T611-431l260 261-89 88ZM372-423q66 0 111.5-45.5T529-580q0-66-45.5-111.5T372-737q-66 0-111.5 45.5T215-580q0 66 45.5 111.5T372-423Z" />
+              </svg>
+            </span>
+          </button>
+          <input type="text" class="input" placeholder="Enter city" style="margin-left: 10px;">
+        </div>
         <h2>Monday, 12:13pm PST</h2>
       </div>
       <div id="rightBody">
@@ -321,8 +413,87 @@
 
   <script>
 
+    function buttonPress() {
+      const button = document.querySelector('.button');
+      const inputField = document.querySelector('.input');
+      const h1Element = document.getElementById('cityName');
+
+      const buttonAnimationDuration = 400;
+
+      button.classList.toggle('move-left');
+
+      if (inputField.classList.contains('show')) {
+        inputField.classList.remove('show');
+        inputField.classList.add('hide');
+
+        setTimeout(() => {
+          h1Element.classList.remove('hidden');
+          void h1Element.offsetWidth;
+          h1Element.classList.add('visible');
+        }, buttonAnimationDuration);
+
+      } else {
+        h1Element.classList.remove('visible');
+        h1Element.classList.add('hidden');
+        inputField.classList.remove('hide');
+        inputField.classList.add('show');
+        inputField.focus();
+      }
+    }
+    document.getElementById('cityName').classList.add('visible');
+
+    let calculateAngle = function (e, item, parent) {
+      let dropShadowColor = `rgba(0, 0, 0, 0.3)`
+      if (parent.getAttribute('data-filter-color') !== null) {
+        dropShadowColor = parent.getAttribute('data-filter-color');
+      }
+
+      if (parent.getAttribute('data-custom-perspective') !== null) {
+        parent.style.perspective = `${parent.getAttribute('data-custom-perspective')}`
+      }
+
+      let x = Math.abs(item.getBoundingClientRect().x - e.clientX);
+      let y = Math.abs(item.getBoundingClientRect().y - e.clientY);
+
+      let halfWidth = item.getBoundingClientRect().width / 2;
+      let halfHeight = item.getBoundingClientRect().height / 2;
+
+      let calcAngleX = (x - halfWidth) / 6;
+      let calcAngleY = (y - halfHeight) / 4;
+
+      item.style.transform = `rotateY(${calcAngleX}deg) rotateX(${calcAngleY}deg) scale(1.15)`;
+
+      parent.style.perspective = `${halfWidth * 2}px`
+      item.style.perspective = `${halfWidth * 3}px`
+
+      let calcShadowX = (x - halfWidth) / 3;
+      let calcShadowY = (y - halfHeight) / 3;
+
+      item.style.filter = `drop-shadow(${-calcShadowX}px ${calcShadowY}px 15px ${dropShadowColor})`;
+    }
+
+
+    document.querySelectorAll('.button').forEach(function (item) {
+      item.addEventListener('mouseenter', function (e) {
+        calculateAngle(e, this.querySelector('span'), this);
+      });
+      item.addEventListener('mousemove', function (e) {
+        calculateAngle(e, this.querySelector('span'), this);
+      });
+
+      item.addEventListener('mouseleave', function (e) {
+        let dropShadowColor = `rgba(0, 0, 0, 0.3)`
+        if (item.getAttribute('data-filter-color') !== null) {
+          dropShadowColor = item.getAttribute('data-filter-color')
+        }
+        item.querySelector('span').style.transform = `rotateY(0deg) rotateX(0deg) scale(1)`;
+        item.querySelector('span').style.filter = `drop-shadow(0 10px 15px ${dropShadowColor})`;
+      });
+    })
+
+
     let script = document.createElement('script');
-    script.src = `functions/nightClear.js`;
+    script.src = `functions/nightclear.js`;
     document.body.appendChild(script);
 
   </script>
