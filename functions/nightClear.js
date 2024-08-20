@@ -1,33 +1,37 @@
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
     window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
-// const link = document.createElement('link');
-const link = document.createElement('link');
-link.rel = 'stylesheet';
-link.href = 'style.css';
-document.head.appendChild(link);
+createNightCanvas();
 
-// Create and append the container div
-const nightCanvas = document.createElement('div');
-nightCanvas.className = 'nightCanvas';
-const nightContainer = document.createElement('div');
-nightContainer.className = 'nightContainer';
-const content = document.createElement('div');
-content.className = 'content';
-const main = document.createElement('div');
-main.className = 'main';
-const canvas = document.createElement('canvas');
-canvas.id = 'universe';
-content.appendChild(main);
-content.appendChild(canvas);
-nightContainer.appendChild(content);
-nightCanvas.appendChild(nightContainer);
-document.body.appendChild(nightCanvas);
+function createNightCanvas() {
+
+    link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'style.css';
+    document.head.appendChild(link);
+
+    // Create and append the container div
+    const nightCanvas = document.createElement('div');
+    nightCanvas.className = 'nightCanvas';
+    const nightContainer = document.createElement('div');
+    nightContainer.className = 'nightContainer';
+    const content = document.createElement('div');
+    content.className = 'content';
+    const main = document.createElement('div');
+    main.className = 'main';
+    const canvas = document.createElement('canvas');
+    canvas.id = 'universe';
+    content.appendChild(main);
+    content.appendChild(canvas);
+    nightContainer.appendChild(content);
+    nightCanvas.appendChild(nightContainer);
+    document.body.appendChild(nightCanvas);
 
 
 
-// Initialize the animation
-initAnimation();
+    // Initialize the animation
+    initAnimation();
+}
 
 function initAnimation() {
     var starDensity = .116;
@@ -43,6 +47,7 @@ function initAnimation() {
     var cometColor = '226,225,224';
     var canva = document.getElementById('universe');
     var stars = [];
+
 
     windowResizeHandler();
     window.addEventListener('resize', windowResizeHandler, false);
@@ -73,7 +78,7 @@ function initAnimation() {
             star.draw();
         }
 
-        window.requestAnimationFrame(draw);
+        animationFrameId = window.requestAnimationFrame(draw);
     }
 
     function Star() {
@@ -174,5 +179,12 @@ function initAnimation() {
 
         canva.setAttribute('width', width);
         canva.setAttribute('height', height);
+    }
+}
+
+function stopAnimation() {
+    if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+        animationFrameId = null; // Reset the ID
     }
 }

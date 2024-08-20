@@ -10,6 +10,7 @@
     body {
       overflow: hidden;
       font-family: Open Sans, sans-serif;
+      background-color: #ccc;
       color: white;
       margin: 28px;
     }
@@ -186,6 +187,7 @@
 
     .button {
       transition: transform 0.3s ease-in-out;
+      color: white;
     }
 
     .input {
@@ -229,6 +231,10 @@
       opacity: 1;
       transform: translateX(0);
     }
+
+    #searchbox::placeholder {
+      color: rgb(197, 197, 197);
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 </head>
@@ -236,14 +242,14 @@
 <body>
 
   <div id="container">
-    <div class="header" id="leftPanel">
+    <div id="leftPanel">
       <div class="header" id="leftHeader">
         <div style="display: flex; align-items: center;">
           <h1 style="margin-bottom: 10px;">73°</h1>
-          <img src="img/PartlyCloudy.png" alt="nightPartlyCloudy" style="padding-left:20px; width: 40px; height: 40px;">
+          <img src="img/01d.png" style="padding-left:20px; width: 40px; height: 40px;">
         </div>
         <h2>Partly Cloudy</h2>
-        <h2>High: 77 Low: 56</h2>
+        <h2>High: 77° Low: 56°</h2>
       </div>
       <div class="glass" id="leftBody">
         <div style="display: grid; grid-template-columns: 1fr auto;gap: 70px;">
@@ -274,12 +280,13 @@
     </div>
     <div id="rightPanel">
       <div class="header" id="rightHeader">
-        <div style="display: flex; align-items: center; justify-content: flex-end; margin-top: 30px;">
+        <div
+          style="display: flex; align-items: center; justify-content: flex-end; margin-top: 30px; position: relative;">
           <h1 id="cityName"
             style="font-size: 30px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width: 40vw; max-width: 700px; text-align: right;">
             Seattle, WA
           </h1>
-          <button class="button" onclick="buttonPress()" style="margin-left: 10px;">
+          <button class="button" onclick="buttonPress()" style="margin-left: 10px; z-index: 999; cursor: pointer;">
             <span>
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="30px" fill="#ffff">
                 <path
@@ -287,122 +294,130 @@
               </svg>
             </span>
           </button>
-          <input type="text" class="input" placeholder="Enter city" style="margin-left: 10px;">
+          <input type="text" class="input" id="searchbox" placeholder="Enter city"
+            style="margin-left: 10px;  z-index: 998;">
+
+          <!-- Overlay container for search results -->
+          <div id="searchOverlay" className="glass2"
+            style="position: absolute; top: 100%; right: 0; width: 80%;  z-index: 1000; display: none; border: none;">
+            <div id="hits"></div>
+          </div>
         </div>
-        <h2>Monday, 12:13pm PST</h2>
+        <h2 id="currentTime">Monday, 12:13pm PST</h2>
       </div>
       <div id="rightBody">
         <div id="rightScroll">
           <div class="glass" id="hourlyForecast">
             <h2>Hourly Forecast</h2>
-            <div class="scrollmenu">
+            <div class="scrollmenu" id="hourlyContainer">
               <div class="hourlyForecast">
                 <h3>12pm</h3>
-                <img src="img/PartlyCloudy.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px;">
+                <img src="img/01n.png" style="width: 40px; height: 40px;">
                 <h3>73°</h3>
               </div>
               <div class="hourlyForecast">
                 <h3>1PM</h3>
-                <img src="img/RainThunder.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px;">
+                <img src="img/01n.png" style="width: 40px; height: 40px;">
                 <h3>73°</h3>
               </div>
               <div class="hourlyForecast">
                 <h3>2PM</h3>
-                <img src="img/Rainy.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px;">
+                <img src="img/01n.png" style="width: 40px; height: 40px;">
                 <h3>73°</h3>
               </div>
               <div class="hourlyForecast">
                 <h3>3PM</h3>
-                <img src="img/Cloudy.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px;">
+                <img src="img/01n.png" style="width: 40px; height: 40px;">
                 <h3>73°</h3>
               </div>
               <div class="hourlyForecast">
                 <h3>4PM</h3>
-                <img src="img/Snowy.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px;">
+                <img src="img/01n.png" style="width: 40px; height: 40px;">
                 <h3>73°</h3>
               </div>
               <div class="hourlyForecast">
                 <h3>5PM</h3>
-                <img src="img/Sunny.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px;">
+                <img src="img/01n.png" style="width: 40px; height: 40px;">
                 <h3>73°</h3>
               </div>
               <div class="hourlyForecast">
                 <h3>6PM</h3>
-                <img src="img/nightClear.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px;">
+                <img src="img/01n.png" style="width: 40px; height: 40px;">
                 <h3>73°</h3>
               </div>
               <div class="hourlyForecast">
                 <h3>7PM</h3>
-                <img src="img/nightPartlyCloudy.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px;">
+                <img src="img/01n.png" style="width: 40px; height: 40px;">
                 <h3>73°</h3>
               </div>
               <div class="hourlyForecast">
                 <h3>8PM</h3>
-                <img src="img/mist.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px;">
+                <img src="img/01n.png" style="width: 40px; height: 40px;">
                 <h3>73°</h3>
               </div>
             </div>
           </div>
           <div class="glass" id="dailyForecast">
             <h2>Daily Forecast</h2>
-            <hr>
-            <div class="dailyForecast">
-              <h3 style="justify-self: start;">Today</h3>
-              <img src="img/Sunny.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px; justify-self: center;">
-              <h3 style="justify-self: end;">61° - 73°</h3>
-            </div>
-            <hr>
-            <div class="dailyForecast">
-              <h3 style="justify-self: start;">8 / 19</h3>
-              <img src="img/Snowy.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px; justify-self: center;">
-              <h3 style="justify-self: end;">61° - 73°</h3>
-            </div>
-            <hr>
-            <div class="dailyForecast">
-              <h3 style="justify-self: start;">8 / 20</h3>
-              <img src="img/nightPartlyCloudy.png" alt="nightPartlyCloudy"
-                style="width: 40px; height: 40px; justify-self: center;">
-              <h3 style="justify-self: end;">61° - 73°</h3>
-            </div>
-            <hr>
-            <div class="dailyForecast">
-              <h3 style="justify-self: start;">8 / 21</h3>
-              <img src="img/nightClear.png" alt="nightPartlyCloudy"
-                style="width: 40px; height: 40px; justify-self: center;">
-              <h3 style="justify-self: end;">61° - 73°</h3>
-            </div>
-            <hr>
-            <div class="dailyForecast">
-              <h3 style="justify-self: start;">8 / 22</h3>
-              <img src="img/Rainy.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px; justify-self: center;">
-              <h3 style="justify-self: end;">61° - 73°</h3>
-            </div>
-            <hr>
-            <div class="dailyForecast">
-              <h3 style="justify-self: start;">8 / 23</h3>
-              <img src="img/RainThunder.png" alt="nightPartlyCloudy"
-                style="width: 40px; height: 40px; justify-self: center;">
-              <h3 style="justify-self: end;">61° - 73°</h3>
-            </div>
-            <hr>
-            <div class="dailyForecast">
-              <h3 style="justify-self: start;">8 / 24</h3>
-              <img src="img/PartlyCloudy.png" alt="nightPartlyCloudy"
-                style="width: 40px; height: 40px; justify-self: center;">
-              <h3 style="justify-self: end;">61° - 73°</h3>
-            </div>
-            <hr>
-            <div class="dailyForecast">
-              <h3 style="justify-self: start;">8 / 25</h3>
-              <img src="img/Cloudy.png" alt="nightPartlyCloudy"
-                style="width: 40px; height: 40px; justify-self: center;">
-              <h3 style="justify-self: end;">61° - 73°</h3>
-            </div>
-            <hr>
-            <div class="dailyForecast">
-              <h3 style="justify-self: start;">8 / 26</h3>
-              <img src="img/mist.png" alt="nightPartlyCloudy" style="width: 40px; height: 40px; justify-self: center;">
-              <h3 style="justify-self: end;">61° - 73°</h3>
+            <div id="dailyContainer">
+              <div>
+                <hr>
+                <div class="dailyForecast">
+                  <h3 style="justify-self: start;">Today</h3>
+                  <img src="img/01n.png" style="width: 40px; height: 40px; justify-self: center;">
+                  <h3 style="justify-self: end;">61° - 73°</h3>
+                </div>
+              </div>
+              <hr>
+              <div>
+                <div class="dailyForecast">
+                  <h3 style="justify-self: start;">8 / 19</h3>
+                  <img src="img/01n.png" style="width: 40px; height: 40px; justify-self: center;">
+                  <h3 style="justify-self: end;">61° - 73°</h3>
+                </div>
+              </div>
+              <hr>
+              <div class="dailyForecast">
+                <h3 style="justify-self: start;">8 / 20</h3>
+                <img src="img/01n.png" style="width: 40px; height: 40px; justify-self: center;">
+                <h3 style="justify-self: end;">61° - 73°</h3>
+              </div>
+              <hr>
+              <div class="dailyForecast">
+                <h3 style="justify-self: start;">8 / 21</h3>
+                <img src="img/01n.png" style="width: 40px; height: 40px; justify-self: center;">
+                <h3 style="justify-self: end;">61° - 73°</h3>
+              </div>
+              <hr>
+              <div class="dailyForecast">
+                <h3 style="justify-self: start;">8 / 22</h3>
+                <img src="img/01n.png" style="width: 40px; height: 40px; justify-self: center;">
+                <h3 style="justify-self: end;">61° - 73°</h3>
+              </div>
+              <hr>
+              <div class="dailyForecast">
+                <h3 style="justify-self: start;">8 / 23</h3>
+                <img src="img/01n.png" style="width: 40px; height: 40px; justify-self: center;">
+                <h3 style="justify-self: end;">61° - 73°</h3>
+              </div>
+              <hr>
+              <div class="dailyForecast">
+                <h3 style="justify-self: start;">8 / 24</h3>
+                <img src="img/01n.png" style="width: 40px; height: 40px; justify-self: center;">
+                <h3 style="justify-self: end;">61° - 73°</h3>
+              </div>
+              <hr>
+              <div class="dailyForecast">
+                <h3 style="justify-self: start;">8 / 25</h3>
+                <img src="img/01n.png" style="width: 40px; height: 40px; justify-self: center;">
+                <h3 style="justify-self: end;">61° - 73°</h3>
+              </div>
+              <hr>
+              <div class="dailyForecast">
+                <h3 style="justify-self: start;">8 / 26</h3>
+                <img src="img/01n.png" style="width: 40px; height: 40px; justify-self: center;">
+                <h3 style="justify-self: end;">61° - 73°</h3>
+              </div>
             </div>
           </div>
         </div>
@@ -410,19 +425,39 @@
     </div>
   </div>
   <div id="vantaCanvas"></div>
+  <div id="backdrop"
+    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(136, 150, 154, 0.5); backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.3s ease; display: none; z-index: 99;">
+  </div>
 
   <script>
 
-    function buttonPress() {
-      const button = document.querySelector('.button');
-      const inputField = document.querySelector('.input');
-      const h1Element = document.getElementById('cityName');
+    let vantaEffect;
+    let cdnScript;
+    let animationFrameId;
 
-      const buttonAnimationDuration = 400;
+    let script = document.createElement('script');
+    script.src = `functions/nightClear.js`;
+    document.body.appendChild(script);
+
+    queryWeather(47.6062, -122.3321);
+
+    const buttonAnimationDuration = 400;
+    const button = document.querySelector('.button');
+    const inputField = document.querySelector('.input');
+    const h1Element = document.getElementById('cityName');
+    const searchOverlay = document.getElementById('searchOverlay');
+    let weather = {};
+
+    function buttonPress() {
 
       button.classList.toggle('move-left');
 
       if (inputField.classList.contains('show')) {
+        backdrop.style.opacity = '0';
+        setTimeout(() => {
+          backdrop.style.display = 'none';
+        }, 300);
+
         inputField.classList.remove('show');
         inputField.classList.add('hide');
 
@@ -431,8 +466,13 @@
           void h1Element.offsetWidth;
           h1Element.classList.add('visible');
         }, buttonAnimationDuration);
-
+        inputField.value = '';
+        searchOverlay.style.display = 'none';
       } else {
+        backdrop.style.display = 'block';
+        setTimeout(() => {
+          backdrop.style.opacity = '1';
+        }, 10);
         h1Element.classList.remove('visible');
         h1Element.classList.add('hidden');
         inputField.classList.remove('hide');
@@ -443,58 +483,432 @@
     document.getElementById('cityName').classList.add('visible');
 
     let calculateAngle = function (e, item, parent) {
-      let dropShadowColor = `rgba(0, 0, 0, 0.3)`
+      let dropShadowColor = `rgba(0, 0, 0, 0.3)`;
       if (parent.getAttribute('data-filter-color') !== null) {
         dropShadowColor = parent.getAttribute('data-filter-color');
       }
 
-      if (parent.getAttribute('data-custom-perspective') !== null) {
-        parent.style.perspective = `${parent.getAttribute('data-custom-perspective')}`
-      }
+      let itemRect = item.getBoundingClientRect();
+      let halfWidth = itemRect.width / 2;
+      let halfHeight = itemRect.height / 2;
 
-      let x = Math.abs(item.getBoundingClientRect().x - e.clientX);
-      let y = Math.abs(item.getBoundingClientRect().y - e.clientY);
+      let x = e.clientX - itemRect.left - halfWidth;
+      let y = e.clientY - itemRect.top - halfHeight;
 
-      let halfWidth = item.getBoundingClientRect().width / 2;
-      let halfHeight = item.getBoundingClientRect().height / 2;
+      let rotationFactor = 3;
+      let scaleFactor = 1.05;
+      let shadowBlur = 10;
 
-      let calcAngleX = (x - halfWidth) / 6;
-      let calcAngleY = (y - halfHeight) / 4;
+      let calcAngleX = (x / halfWidth) * rotationFactor;
+      let calcAngleY = (y / halfHeight) * rotationFactor;
 
-      item.style.transform = `rotateY(${calcAngleX}deg) rotateX(${calcAngleY}deg) scale(1.15)`;
+      item.style.transform = `rotateY(${calcAngleX}deg) rotateX(${calcAngleY}deg) scale(${scaleFactor})`;
 
-      parent.style.perspective = `${halfWidth * 2}px`
-      item.style.perspective = `${halfWidth * 3}px`
+      parent.style.perspective = `${halfWidth * 3}px`;
+      item.style.perspective = `${halfWidth * 2}px`;
 
-      let calcShadowX = (x - halfWidth) / 3;
-      let calcShadowY = (y - halfHeight) / 3;
+      let calcShadowX = (x / halfWidth) * shadowBlur;
+      let calcShadowY = (y / halfHeight) * shadowBlur;
 
-      item.style.filter = `drop-shadow(${-calcShadowX}px ${calcShadowY}px 15px ${dropShadowColor})`;
+      item.style.filter = `drop-shadow(${-calcShadowX}px ${calcShadowY}px ${shadowBlur}px ${dropShadowColor})`;
+    };
+
+    function handleMouseEnter(e) {
+      calculateAngle(e, this.querySelector('span'), this);
     }
 
+    function handleMouseMove(e) {
+      calculateAngle(e, this.querySelector('span'), this);
+    }
 
-    document.querySelectorAll('.button').forEach(function (item) {
-      item.addEventListener('mouseenter', function (e) {
-        calculateAngle(e, this.querySelector('span'), this);
-      });
-      item.addEventListener('mousemove', function (e) {
-        calculateAngle(e, this.querySelector('span'), this);
-      });
+    function handleMouseLeave(e) {
+      let dropShadowColor = `rgba(0, 0, 0, 0.3)`;
+      if (this.getAttribute('data-filter-color') !== null) {
+        dropShadowColor = this.getAttribute('data-filter-color');
+      }
+      this.querySelector('span').style.transform = `rotateY(0deg) rotateX(0deg) scale(1)`;
+      this.querySelector('span').style.filter = `drop-shadow(0 10px 15px ${dropShadowColor})`;
+    }
 
-      item.addEventListener('mouseleave', function (e) {
-        let dropShadowColor = `rgba(0, 0, 0, 0.3)`
-        if (item.getAttribute('data-filter-color') !== null) {
-          dropShadowColor = item.getAttribute('data-filter-color')
+    function updateButtons() {
+      document.querySelectorAll('.button').forEach(function (item) {
+        item.removeEventListener('mouseenter', handleMouseEnter);
+        item.removeEventListener('mousemove', handleMouseMove);
+        item.removeEventListener('mouseleave', handleMouseLeave);
+
+        item.addEventListener('mouseenter', handleMouseEnter);
+        item.addEventListener('mousemove', handleMouseMove);
+        item.addEventListener('mouseleave', handleMouseLeave);
+      });
+    }
+
+    updateButtons();
+
+    document.getElementById('searchbox').addEventListener('input', function () {
+      const query = this.value;
+      const hitsContainer = document.getElementById('hits');
+      const backdrop = document.getElementById('backdrop');
+
+      if (query.length > 0) {
+        fetch(`https://golden-sable-1f1cf8.netlify.app/.netlify/functions/search?query=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(hits => {
+            hitsContainer.innerHTML = '';
+
+            if (hits.length > 0) {
+              hits.forEach(hit => {
+                const hitElement = document.createElement('button');
+                hitElement.className = 'button';
+                hitElement.style.width = '100%';
+                hitElement.style.cursor = 'pointer';
+
+                const hitSpan = document.createElement('span');
+                hitSpan.textContent = `${hit.city}, ${hit.iso2}`;
+                hitSpan.style.display = 'block';
+                hitSpan.style.padding = '10px';
+                hitSpan.style.textAlign = 'left';
+
+                hitElement.appendChild(hitSpan);
+                hitElement.addEventListener('click', () => {
+                  document.getElementById('cityName').textContent = `${hit.city}, ${hit.iso2}`;
+                  searchOverlay.style.display = 'none';
+                  inputField.classList.remove('show');
+                  inputField.classList.add('hide');
+
+                  backdrop.style.opacity = '0';
+                  setTimeout(() => {
+                    backdrop.style.display = 'none';
+                  }, 300);
+
+                  setTimeout(() => {
+                    h1Element.classList.remove('hidden');
+                    void h1Element.offsetWidth;
+                    h1Element.classList.add('visible');
+                    inputField.value = '';
+                  }, buttonAnimationDuration);
+                  queryWeather(hit.lat, hit.lng);
+                });
+
+                hitsContainer.appendChild(hitElement);
+              });
+              updateButtons();
+              searchOverlay.style.display = 'block';
+            }
+            else {
+              searchOverlay.style.display = 'none';
+            }
+          })
+          .catch(err => {
+            console.error('Error fetching search results:', err);
+            searchOverlay.style.display = 'none';
+          });
+      } else {
+        searchOverlay.style.display = 'none';
+      }
+    });
+
+    function queryWeather(lat, lng) {
+      fetch(`https://golden-sable-1f1cf8.netlify.app/.netlify/functions/api-proxy?lat=${lat}&lng=${lng}`)
+        .then(response => response.json())
+        .then(data => {
+          weather = data;
+          setWeather();
+        })
+        .catch(err => {
+          console.error('Error fetching weather:', err);
+        });
+    }
+
+    function formatTime(unixTimestamp, offset, includeMinutes = false) {
+      // Convert the UNIX timestamp to milliseconds and add the timezone offset (in seconds) converted to milliseconds
+      const localTime = new Date((unixTimestamp + offset) * 1000);
+
+      // Extract hours and minutes
+      let hours = localTime.getUTCHours();
+      const minutes = localTime.getUTCMinutes().toString().padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+
+      // Convert hours from 24-hour to 12-hour format
+      hours = hours % 12 || 12;
+
+      // Return the formatted time, with or without minutes
+      const formattedTime = includeMinutes
+        ? `${hours}:${minutes} ${ampm}`
+        : `${hours} ${ampm}`;
+
+      return formattedTime;
+    }
+
+    function updateCurrentTime(unixTimestamp, offset) {
+      // Get the element to display the time (with error handling)
+      const currentTimeElement = document.getElementById('currentTime');
+      if (!currentTimeElement) {
+        console.error("Element with ID 'currentTime' not found!");
+        return; // Stop if the element is not present
+      }
+
+      // Function to update the time
+      function refreshTime() {
+        const now = Math.floor(Date.now() / 1000);
+        currentTimeElement.textContent = formatTime(now, offset, true);
+      }
+
+      // Set initial time and refresh every minute
+      refreshTime();
+
+      // Calculate the delay to the next full minute (taking seconds into account)
+      const now = new Date((unixTimestamp + offset) * 1000);
+      const seconds = now.getUTCSeconds();
+      const initialDelay = (60 - seconds) * 1000;
+
+      // Set timeout to synchronize with the next full minute
+      setTimeout(() => {
+        refreshTime(); // Refresh at the start of the new minute
+        setInterval(refreshTime, 60000); // Then update every minute
+      }, initialDelay);
+    }
+    function capitalizeWords(str) {
+      return str
+        .toLowerCase() // Convert entire string to lowercase
+        .split(' ')    // Split string into words
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize first letter of each word
+        .join(' ');    // Join words back into a string
+    }
+
+    function loadScript(newScriptSrc) {
+      // Remove any existing script with a source starting with 'functions/'
+      if (vantaEffect) {
+        vantaEffect.destroy();
+        vantaEffect = null;
+        cdnScript.parentNode.removeChild(cdnScript);
+      }
+      if (animationFrameId) {
+        stopAnimationAndCleanup();
+      }
+      script.parentNode.removeChild(script);
+
+      // Create and append the new script
+      script = document.createElement('script');
+      script.src = newScriptSrc;
+      document.body.appendChild(script);
+    }
+
+    function removeStyleLink() {
+      const linkElement = document.querySelector('link[href="style.css"]');
+      if (linkElement) {
+        linkElement.parentNode.removeChild(linkElement);
+      }
+    }
+
+    function removeCanvas() {
+      const nightCanvas = document.querySelector('.nightCanvas');
+      const rainCanvas = document.querySelector('.rain');
+      if (nightCanvas) {
+        nightCanvas.parentNode.removeChild(nightCanvas);
+      }
+      if (rainCanvas) {
+        rainCanvas.parentNode.removeChild(rainCanvas);
+      }
+    }
+
+    function stopAnimationAndCleanup() {
+      stopAnimation(); // Stop the animation loop
+      removeStyleLink(); // Remove the style link
+      removeCanvas(); // Remove the canvas and its container
+    }
+
+    function setWeather() {
+
+      const leftHeader = document.getElementById('leftHeader');
+      const leftBody = document.getElementById('leftBody');
+      const offset = weather.timezone_offset;
+
+      // Get current time in Unix timestamp format (with offset applied)
+      const currentTime = Math.floor(Date.now() / 1000) + offset;
+
+      // Convert sunset and sunrise times from Unix timestamp to local time with offset
+      const sunsetTime = weather.daily[0].sunset + offset;
+      const sunriseTime = weather.daily[0].sunrise + offset;
+
+      // Determine if current time is during the day or night
+      const isDaytime = currentTime >= sunriseTime && currentTime <= sunsetTime;
+
+      if (leftHeader) {
+        const h1 = leftHeader.querySelector('h1');
+        const img = leftHeader.querySelector('img');
+        const h2Elements = leftHeader.querySelectorAll('h2');
+        if (h1 && h2Elements.length >= 2 && img && weather.current) {
+          h1.textContent = `${Math.round(weather.current.temp)}°`;
+          img.src = `img/${weather.current.weather[0].icon}.png`;
+          img.alt = weather.current.weather[0].description;
+          h2Elements[0].textContent = capitalizeWords(weather.current.weather[0].description);
+          h2Elements[1].textContent = `High: ${Math.round(weather.daily[0].temp.max)}° Low: ${Math.round(weather.daily[0].temp.min)}°`;
+        } else {
+          console.error('Error: Unable to find required elements or weather data in leftHeader.');
         }
-        item.querySelector('span').style.transform = `rotateY(0deg) rotateX(0deg) scale(1)`;
-        item.querySelector('span').style.filter = `drop-shadow(0 10px 15px ${dropShadowColor})`;
+      } else {
+        console.error('Error: Element with id "leftHeader" not found.');
+      }
+
+      if (leftBody) {
+        const h3Elements = leftBody.querySelectorAll('h3');
+        if (h3Elements.length >= 10 && weather.current) {
+          h3Elements[1].textContent = `${Math.round(weather.current.feels_like)}°`;
+
+          // Determine which time to show based on current time
+          if (isDaytime) {
+            h3Elements[2].textContent = 'Sunset';
+            h3Elements[3].textContent = formatTime(sunsetTime, 0, true);
+          } else {
+            h3Elements[2].textContent = 'Sunrise';
+            h3Elements[3].textContent = formatTime(sunriseTime, 0, true);
+          }
+
+          h3Elements[5].textContent = `${weather.current.wind_speed} mph`;
+          h3Elements[7].textContent = `${weather.current.humidity}%`;
+          h3Elements[9].textContent = `${weather.current.uvi}`;
+        } else {
+          console.error('Error: Unable to find required elements or weather data in leftBody.');
+        }
+      } else {
+        console.error('Element with id "leftBody" not found.');
+      }
+
+      updateCurrentTime(weather.current.dt, weather.timezone_offset);
+
+      if (weather.hourly) {
+        displayHourlyForecast(weather.hourly, offset);
+      } else {
+        console.error('Hourly forecast data is missing.');
+      }
+      if (weather.daily) {
+        displayDailyForecast(weather.daily);
+      } else {
+        console.error('Hourly forecast data is missing.');
+      }
+
+      // Load the appropriate script based on the current weather
+      let backgroundCode;
+      switch (weather.current.weather[0].icon) {
+        case '01d':
+          backgroundCode = 'dayClear';
+          break;
+        case '01n':
+          backgroundCode = 'nightClear';
+          break;
+        case '02d':
+          backgroundCode = 'dayPartlyCloudy';
+          break;
+        case '02n':
+          backgroundCode = 'nightPartlyCloudy';
+          break;
+        case '03d':
+        case '04d':
+          backgroundCode = 'dayCloudy';
+          break;
+        case '03n':
+        case '04n':
+          backgroundCode = 'nightCloudy';
+          break;
+        case '09d':
+        case '09n':
+        case '10d':
+        case '10n':
+          backgroundCode = 'rain';
+          break;
+        case '11d':
+        case '11n':
+          backgroundCode = 'rain'; //thunder
+          break;
+        case '13d':
+        case '13n':
+          backgroundCode = 'rain'; //thunder
+          break;
+        case '50d':
+        case '50n':
+          backgroundCode = 'mist'; //thunder
+          break;
+        default:
+          backgroundCode = 'dayClear';
+      }
+      loadScript(`functions/${backgroundCode}.js`);
+    }
+
+    function displayHourlyForecast(hourlyData, offset) {
+      const hourlyContainer = document.getElementById('hourlyContainer');
+      hourlyContainer.innerHTML = '';
+
+      hourlyData.forEach(hour => {
+        const hourlyForecast = document.createElement('div');
+        hourlyForecast.className = 'hourlyForecast';
+        const formattedTime = formatTime(hour.dt, offset);
+
+        // Create and append elements for time, weather icon, and temperature
+        const timeElement = document.createElement('h3');
+        timeElement.textContent = formattedTime;
+        hourlyForecast.appendChild(timeElement);
+
+        const iconElement = document.createElement('img');
+        iconElement.src = `img/${hour.weather[0].icon}.png`;
+        iconElement.alt = hour.weather[0].description;
+        iconElement.style.width = '40px';
+        iconElement.style.height = '40px';
+        hourlyForecast.appendChild(iconElement);
+
+        const tempElement = document.createElement('h3');
+        tempElement.textContent = `${Math.round(hour.temp)}°`;
+        hourlyForecast.appendChild(tempElement);
+
+        // Append the hourly forecast to the container
+        hourlyContainer.appendChild(hourlyForecast);
       });
-    })
+    }
+
+    function displayDailyForecast(dailyForecastData) {
+      const dailyContainer = document.getElementById('dailyContainer');
+      dailyContainer.innerHTML = ''; // Clear previous forecast
+
+      dailyForecastData.forEach((day, index) => {
+        // Create the daily forecast container
 
 
-    let script = document.createElement('script');
-    script.src = `functions/nightclear.js`;
-    document.body.appendChild(script);
+        const dailyForecastElement = document.createElement('div');
+        dailyForecastElement.className = 'dailyForecast';
+
+        // Create and append the date label (Today, 8/19, etc.)
+        const dateLabel = document.createElement('h3');
+        if (index === 0) {
+          dateLabel.textContent = 'Today';
+        } else {
+          const date = new Date(day.dt * 1000);
+          dateLabel.textContent = `${date.getMonth() + 1} / ${date.getDate()}`;
+        }
+        dateLabel.style.justifySelf = 'start';
+
+        // Create and append the weather icon
+        const weatherIcon = document.createElement('img');
+        const weatherIconCode = day.weather[0].icon;
+        weatherIcon.src = `img/${weatherIconCode}.png`;
+        weatherIcon.style.width = '40px';
+        weatherIcon.style.height = '40px';
+        weatherIcon.style.justifySelf = 'center';
+
+        // Create and append the temperature range
+        const tempRange = document.createElement('h3');
+        tempRange.textContent = `${Math.round(day.temp.min)}° - ${Math.round(day.temp.max)}°`;
+        tempRange.style.justifySelf = 'end';
+
+        // Append elements to the daily forecast container
+        dailyForecastElement.appendChild(dateLabel);
+        dailyForecastElement.appendChild(weatherIcon);
+        dailyForecastElement.appendChild(tempRange);
+
+        // Append the daily forecast to the container
+        const hr = document.createElement('hr');
+        dailyContainer.appendChild(hr);
+        dailyContainer.appendChild(dailyForecastElement);
+      });
+    }
 
   </script>
 </body>

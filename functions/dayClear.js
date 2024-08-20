@@ -1,7 +1,7 @@
-let cdnScript = document.createElement('script');
+cdnScript = document.createElement('script');
 cdnScript.src = `https://cdn.jsdelivr.net/npm/vanta/dist/vanta.birds.min.js`;
 cdnScript.onload = () => {
-    VANTA.BIRDS({
+    vantaEffect = VANTA.BIRDS({
         el: "#vantaCanvas",
         mouseControls: true,
         touchControls: true,

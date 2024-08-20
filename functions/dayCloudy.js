@@ -1,7 +1,7 @@
-let cdnScript = document.createElement('script');
+cdnScript = document.createElement('script');
 cdnScript.src = `https://cdn.jsdelivr.net/npm/vanta/dist/vanta.clouds.min.js`;
 cdnScript.onload = () => {
-    VANTA.CLOUDS({
+    vantaEffect = VANTA.CLOUDS({
         el: "#vantaCanvas",
         mouseControls: true,
         touchControls: true,

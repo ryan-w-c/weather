@@ -1,7 +1,7 @@
-let cdnScript = document.createElement('script');
+cdnScript = document.createElement('script');
 cdnScript.src = `https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js`;
 cdnScript.onload = () => {
-  VANTA.FOG({
+  vantaEffect = VANTA.FOG({
     el: "#vantaCanvas",
     mouseControls: true,
     touchControls: true,
