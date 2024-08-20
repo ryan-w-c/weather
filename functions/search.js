@@ -11,8 +11,8 @@ export default async (req, context) => {
     attributesToRetrieve: ['city', 'iso2', 'lat', 'lng']
   });
 
-  return new Response(JSON.stringify(hits), { 
-    headers: { 
+  return new Response(JSON.stringify(hits), {
+    headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': 'https://cavanagh.dev',
       'Access-Control-Allow-Methods': 'GET',
