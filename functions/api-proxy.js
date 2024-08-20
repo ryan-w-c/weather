@@ -9,9 +9,11 @@ export default async (req, context) => {
   const response = await fetch(weatherUrl);
   const data = await response.json();
   return new Response(JSON.stringify(data), {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'https://cavanagh.dev',
-    'Access-Control-Allow-Methods': 'GET',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'https://cavanagh.dev',
+      'Access-Control-Allow-Methods': 'GET',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
   });
 };
