@@ -2,7 +2,7 @@ export default async (req, context) => {
   const url = new URL(req.url);
   const lat = url.searchParams.get('lat');
   const lng = url.searchParams.get('lng');
-  const apiKey = process.env.ALGOLIA_APP_ID;
+  const apiKey = process.env.OPEN_WEATHER_MAP_API_KEY;
 
   const weatherUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lng}&appid=${apiKey}&units=imperial`;
 
