@@ -3,7 +3,7 @@ const instantsearch = require('instantsearch.js');
 
 export default async (req, context) => {
   const searchClient = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_API_KEY);
-  const search = searchClient.initIndex('worldcities');
+  const search = searchClient.initIndex('city.list');
 
   const url = new URL(req.url);
   const query = url.searchParams.get('query') || '';
