@@ -549,7 +549,7 @@
       const hitsContainer = document.getElementById('hits');
       const backdrop = document.getElementById('backdrop');
 
-      if (query.length > 0) {
+      if (query.length > 1) {
         fetch(`https://golden-sable-1f1cf8.netlify.app/.netlify/functions/search?query=${encodeURIComponent(query)}`)
           .then(response => response.json())
           .then(hits => {
