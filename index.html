@@ -626,9 +626,7 @@
     }
 
     function update3DButtons() {
-      // Apply to search buttons and dynamically created buttons in search results
-      document.querySelectorAll('.js-search-button, #hits .button-3d-effect').forEach(function (item) {
-        // Check if event listeners are already attached to prevent duplicates if this function is called multiple times
+      document.querySelectorAll('.js-search-button, .hits .button-3d-effect').forEach(function (item) {
         if (!item.dataset.has3dListeners) {
           item.addEventListener('mouseenter', handleMouseEnter);
           item.addEventListener('mousemove', handleMouseMove);
@@ -656,7 +654,7 @@
                   return;
                 }
                 const hitElement = document.createElement('button');
-                hitElement.className = 'button-3d-effect'; // Use the 3D effect class
+                hitElement.className = 'button-3d-effect';
                 hitElement.style.width = '100%';
                 hitElement.style.cursor = 'pointer';
 
@@ -667,30 +665,32 @@
                 hitSpan.style.textAlign = 'left';
                 hitElement.appendChild(hitSpan);
 
-                hitElement.addEventListener('click', () => {
-                  cityNameElements.forEach(nameEl => nameEl.textContent = `${hit.city}, ${hit.iso2}`);
-                  searchOverlays.forEach(overlay => overlay.style.display = 'none');
-                  backdrop.style.opacity = '0';
-                  setTimeout(() => {
-                    backdrop.style.display = 'none';
-                  }, 300);
-
-                  searchInputs.forEach(input => {
-                    input.classList.remove('show');
-                    input.classList.add('hide');
-                    input.value = '';
-                  });
-                  setTimeout(() => {
-                    cityNameElements.forEach(h1 => {
-                      h1.classList.remove('hidden');
-                      void h1.offsetWidth;
-                      h1.classList.add('visible');
-                    });
-                  }, buttonAnimationDuration);
-                  queryWeather(hit.lat, hit.lng);
-                });
                 hitsContainers.forEach(container => {
-                  container.appendChild(hitElement);
+                  const hitElementClone = hitElement.cloneNode(true);
+
+                  hitElementClone.addEventListener('click', () => {
+                    cityNameElements.forEach(nameEl => nameEl.textContent = `${hit.city}, ${hit.iso2}`);
+                    searchOverlays.forEach(overlay => overlay.style.display = 'none');
+                    backdrop.style.opacity = '0';
+                    setTimeout(() => {
+                      backdrop.style.display = 'none';
+                    }, 300);
+
+                    searchInputs.forEach(input => {
+                      input.classList.remove('show');
+                      input.classList.add('hide');
+                      input.value = '';
+                    });
+                    setTimeout(() => {
+                      cityNameElements.forEach(h1 => {
+                        h1.classList.remove('hidden');
+                        void h1.offsetWidth;
+                        h1.classList.add('visible');
+                      });
+                    }, buttonAnimationDuration);
+                    queryWeather(hit.lat, hit.lng);
+                  });
+                  container.appendChild(hitElementClone);
                 });
               });
               update3DButtons();
