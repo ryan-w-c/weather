@@ -421,9 +421,9 @@
               </svg></span>
           </button>
           <input type="text" class="js-search-input" placeholder="Enter city">
-          <div id="searchOverlay" class="glass"
+          <div class="searchOverlay glass"
             style="position: absolute; top: 100%; right: 0; width: 80%;z-index: 1000; display: none; border: none;">
-            <div id="hits"></div>
+            <div class="hits"></div>
           </div>
         </div>
         <h2 class="js-current-time">Monday, 12:13pm PST</h2>
@@ -458,6 +458,10 @@
             </svg></span>
         </button>
         <input type="text" class="js-search-input" placeholder="Enter city">
+        <div class="searchOverlay glass"
+          style="position: absolute; top: 100%; right: 0; width: 80%;z-index: 1000; display: none; border: none;">
+          <div class="hits"></div>
+        </div>
       </div>
     </div>
     <div class="js-left-header" id="leftHeaderMobile">
@@ -526,9 +530,9 @@
     const searchButtons = document.querySelectorAll('.js-search-button');
     const searchInputs = document.querySelectorAll('.js-search-input');
     const cityNameElements = document.querySelectorAll('.js-city-name-h1');
-    const searchOverlay = document.getElementById('searchOverlay');
+    const searchOverlays = document.querySelectorAll('searchOverlay');
     const backdrop = document.getElementById('backdrop');
-    const hitsContainer = document.getElementById('hits');
+    const hitsContainers = document.querySelectorAll('hits');
     let weather = {};
 
     function buttonPress() {
@@ -555,7 +559,7 @@
             h1.classList.add('visible');
           });
         }, buttonAnimationDuration);
-        searchOverlay.style.display = 'none';
+        searchOverlays.forEach(overlay => overlay.style.display = 'none');
       } else {
         backdrop.style.display = 'block';
         setTimeout(() => {
@@ -643,7 +647,9 @@
         fetch(`https://golden-sable-1f1cf8.netlify.app/.netlify/functions/search?query=${encodeURIComponent(query)}`)
           .then(response => response.json())
           .then(hits => {
-            hitsContainer.innerHTML = '';
+            hitsContainers.forEach(container => {
+              container.innerHTML = '';
+            });
             if (hits.length > 0) {
               hits.forEach(hit => {
                 if (!hit.city || !hit.iso2) {
@@ -663,7 +669,7 @@
 
                 hitElement.addEventListener('click', () => {
                   cityNameElements.forEach(nameEl => nameEl.textContent = `${hit.city}, ${hit.iso2}`);
-                  searchOverlay.style.display = 'none';
+                  searchOverlays.forEach(overlay => overlay.style.display = 'none');
                   backdrop.style.opacity = '0';
                   setTimeout(() => {
                     backdrop.style.display = 'none';
@@ -683,19 +689,21 @@
                   }, buttonAnimationDuration);
                   queryWeather(hit.lat, hit.lng);
                 });
-                hitsContainer.appendChild(hitElement);
+                hitsContainers.forEach(container => {
+                  container.appendChild(hitElement);
+                });
               });
-              update3DButtons(); // Re-apply for new buttons
-              searchOverlay.style.display = 'block';
+              update3DButtons();
+              searchOverlays.forEach(overlay => overlay.style.display = 'block');
             } else {
-              searchOverlay.style.display = 'none';
+              searchOverlays.forEach(overlay => overlay.style.display = 'none');
             }
           }).catch(err => {
             console.error('Error fetching search results:', err);
-            searchOverlay.style.display = 'none';
+            searchOverlays.forEach(overlay => overlay.style.display = 'none');
           });
       } else {
-        searchOverlay.style.display = 'none';
+        searchOverlays.forEach(overlay => overlay.style.display = 'none');
       }
     }
 
