@@ -557,6 +557,9 @@
 
             if (hits.length > 0) {
               hits.forEach(hit => {
+                if (!hit.city || !hit.iso2) {
+                  return;
+                }
                 const hitElement = document.createElement('button');
                 hitElement.className = 'button';
                 hitElement.style.width = '100%';
@@ -570,21 +573,40 @@
 
                 hitElement.appendChild(hitSpan);
                 hitElement.addEventListener('click', () => {
-                  document.getElementById('cityName').textContent = `${hit.city}, ${hit.iso2}`;
-                  searchOverlay.style.display = 'none';
-                  inputField.classList.remove('show');
-                  inputField.classList.add('hide');
+                  const cityNameElement = document.getElementById('cityName');
+                  const searchOverlay = document.getElementById('searchOverlay');
+                  const inputField = document.getElementById('searchbox');
+                  const backdrop = document.getElementById('backdrop');
+                  const h1Element = document.getElementById('cityName');
+                  const buttonAnimationDuration = 400;
 
-                  backdrop.style.opacity = '0';
-                  setTimeout(() => {
-                    backdrop.style.display = 'none';
-                  }, 300);
+                  if (cityNameElement) {
+                    cityNameElement.textContent = `${hit.city}, ${hit.iso2}`;
+                  }
+                  if (searchOverlay) {
+                    searchOverlay.style.display = 'none';
+                  }
+                  if (inputField) {
+                    inputField.classList.remove('show');
+                    inputField.classList.add('hide');
+                  }
+
+                  if (backdrop) {
+                    backdrop.style.opacity = '0';
+                    setTimeout(() => {
+                      backdrop.style.display = 'none';
+                    }, 300);
+                  }
 
                   setTimeout(() => {
-                    h1Element.classList.remove('hidden');
-                    void h1Element.offsetWidth;
-                    h1Element.classList.add('visible');
-                    inputField.value = '';
+                    if (h1Element) {
+                      h1Element.classList.remove('hidden');
+                      void h1Element.offsetWidth;
+                      h1Element.classList.add('visible');
+                    }
+                    if (inputField) {
+                      inputField.value = '';
+                    }
                   }, buttonAnimationDuration);
                   queryWeather(hit.lat, hit.lng);
                 });
@@ -623,9 +645,9 @@
       // Convert the UNIX timestamp to milliseconds and add the timezone offset (in seconds) converted to milliseconds
       const localTime = new Date((unixTimestamp + offset) * 1000);
 
-      // Extract hours and minutes
-      let hours = localTime.getUTCHours();
-      const minutes = localTime.getUTCMinutes().toString().padStart(2, '0');
+      // Extract hours and minutes from the *local* time
+      let hours = localTime.getHours();
+      const minutes = localTime.getMinutes().toString().padStart(2, '0');
       const ampm = hours >= 12 ? 'PM' : 'AM';
 
       // Convert hours from 24-hour to 12-hour format
@@ -667,6 +689,7 @@
         setInterval(refreshTime, 60000); // Then update every minute
       }, initialDelay);
     }
+
     function capitalizeWords(str) {
       return str
         .toLowerCase() // Convert entire string to lowercase
