@@ -645,9 +645,9 @@
       // Convert the UNIX timestamp to milliseconds and add the timezone offset (in seconds) converted to milliseconds
       const localTime = new Date((unixTimestamp + offset) * 1000);
 
-      // Extract hours and minutes from the *local* time
-      let hours = localTime.getHours();
-      const minutes = localTime.getMinutes().toString().padStart(2, '0');
+      // Extract hours and minutes
+      let hours = localTime.getUTCHours();
+      const minutes = localTime.getUTCMinutes().toString().padStart(2, '0');
       const ampm = hours >= 12 ? 'PM' : 'AM';
 
       // Convert hours from 24-hour to 12-hour format
