@@ -516,7 +516,8 @@
     let vantaEffect;
     let cdnScript;
     let animationFrameId;
-    let globalScriptElement = document.createElement('script'); // Use a global script element for backgrounds
+    let globalScriptElement = document.createElement('script');
+    globalScriptElement.src = `functions/nightClear.js`;
     document.body.appendChild(globalScriptElement);
 
     queryWeather(47.6062, -122.3321);
@@ -758,21 +759,17 @@
       if (vantaEffect) {
         vantaEffect.destroy();
         vantaEffect = null;
-      }
-      if (cdnScript && cdnScript.parentNode) {
         cdnScript.parentNode.removeChild(cdnScript);
       }
       if (animationFrameId) {
-        stopAnimationAndCleanup(); // Assuming this function handles its specific cleanup
+        stopAnimationAndCleanup();
       }
-      // Remove old script if it's the same global element being reused
-      if (globalScriptElement && globalScriptElement.src) {
-        // Potentially do nothing if src is same, or reload:
-        // globalScriptElement.parentNode.removeChild(globalScriptElement);
-        // globalScriptElement = document.createElement('script');
-        // document.body.appendChild(globalScriptElement);
-      }
-      globalScriptElement.src = newScriptSrc; // Set src on the persistent script element
+      globalScriptElement.parentNode.removeChild(globalScriptElement);
+
+      // Create and append the new script
+      globalScriptElement = document.createElement('script');
+      globalScriptElement.src = newScriptSrc;
+      document.body.appendChild(globalScriptElement);
     }
     function removeStyleLink() {
       const linkElement = document.querySelector('link[href="style.css"]');
@@ -785,11 +782,10 @@
       if (rainCanvas) rainCanvas.parentNode.removeChild(rainCanvas);
     }
     function stopAnimationAndCleanup() {
-      if (typeof stopAnimation === "function") stopAnimation(); // Check if function exists from dynamic script
+      stopAnimation();
       removeStyleLink();
       removeCanvas();
     }
-
 
     function setWeather() {
       if (!weather || !weather.current || !weather.daily || weather.daily.length === 0) {
